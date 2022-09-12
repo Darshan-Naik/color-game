@@ -33,23 +33,20 @@ pallets.forEach((pallet) => {
   pallet.addEventListener("click", handlePalletClick);
 });
 
-async function start(){
-    let targets = [...pallets];
-    while(targets.length){
-        const random = Math.floor(Math.random() * targets.length);
-        const target = targets[random];
-        targets = targets.filter((item) => item !== target);
-        target.classList.remove("hide-color");
-        await new Promise((resolve) => setTimeout(resolve,250));
-        target.classList.add("hide-color");
-    }
-    block = false;
+async function start() {
+  const param =new URLSearchParams(window.location.search);
+ const time = (param.get("s") || 1) * 1000;
+  await new Promise((resolve) => setTimeout(resolve, time));
+  pallets.forEach((pallet) => {
+    pallet.classList.add("hide-color");
+  })
+  block = false;
 }
 start();
 
 async function handlePalletClick({ target }) {
-    const color = target.getAttribute("data-color");
-    console.log(color,selectedColors);
+  const color = target.getAttribute("data-color");
+  console.log(color, selectedColors);
   if (block || target === selected || selectedColors.includes(color)) return;
   block = true;
   target.classList.remove("hide-color");
